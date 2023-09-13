@@ -1,13 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {TaskCreator} from './components/TaskCreator'
 
 function App() {
 
-  const [taskItems, setTasksItems] = useState([
-    {name: 'mi primer tarea', done: false},
-    {name: 'mi segunda tarea', done: false},
-    {name: 'mi tercera tarea', done: false}
-  ]);
+  const [taskItems, setTasksItems] = useState([]);
 
   const createNewTask = (taskName)=>{
     if(!taskItems.find(task => task.name === taskName)){
@@ -15,6 +11,17 @@ function App() {
     }
     
   }
+
+  useEffect(()=>{
+    let data = localStorage.getItem('tasks')
+    if(data){
+      setTasksItems(JSON.parse(data))
+    }
+  }, [  ])
+
+  useEffect(()=>{
+    localStorage.setItem('tasks', JSON.stringify(taskItems))
+  }, [ taskItems ])
 
   return (
 
